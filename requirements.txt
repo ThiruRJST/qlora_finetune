@@ -1,5 +1,6 @@
 bitsandbytes
 transformers
+transformers[sentencepiece]
 peft
 accelerate
 datasets
