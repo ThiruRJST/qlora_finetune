@@ -1,5 +1,4 @@
 from functools import partial
-from src.qlora_finetune_phi3 import logger
 from transformers import AutoTokenizer
 
 def create_prompt_format(sample: dict) -> dict:
@@ -37,12 +36,10 @@ def get_max_length(model):
     for length_settings in ["n_positions", "max_position_embeddings", "seq_length"]:
         max_len = getattr(model_config, length_settings, None)        
         if max_len:
-            logger.info(f"Max length found in model config: {max_len}")
             break
         
     if not max_len:
         max_len = 1024
-        logger.info(f"Max length not found in model config. Setting to default: {max_len}")
     return max_len
 
 def preprocess_batch(batch, tokenizer, max_len)        :
@@ -62,8 +59,6 @@ def preprocess_batch(batch, tokenizer, max_len)        :
 
 def preprocess_dataset(tokenizer: AutoTokenizer, max_len: int, seed: int, dataset):
     """Format and tokenize the dataset for training"""    
-    
-    logger.info("preprocessing dataset...")
     dataset = dataset.map(create_prompt_format)
     
     _preprocess_fn = partial(
@@ -82,6 +77,6 @@ def preprocess_dataset(tokenizer: AutoTokenizer, max_len: int, seed: int, datase
         lambda sample: len(sample["input_ids"]) < max_len
     )
     
-    dataset = dataset.shuffle(seed=-seed)
+    dataset = dataset.shuffle(seed=seed)
     
     return dataset
