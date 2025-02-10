@@ -1,3 +1,4 @@
+import os
 import transformers
 
 from datasets import load_dataset
@@ -16,7 +17,7 @@ from qlora_finetune_phi3.trainer import print_trainable_parameters
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer
 
 #login hugingface hub
-interpreter_login()
+os.environ["HF_TOKEN"] = "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"
 
 #Original Model
 logger.info(f"Loading original model: {ExpConfig.model_name}")
